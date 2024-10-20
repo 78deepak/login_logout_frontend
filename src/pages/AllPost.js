@@ -322,13 +322,13 @@ const AllPost = () => {
                 ) : (
                   <div className="flex-grow flex flex-col justify-center">
                     <h2 className="text-xl font-semibold text-gray-900 text-center">{post.name}</h2>
-                    <p className="text-gray-900 text-center"><strong>Email: </strong>{post.email}</p>
+                    <p className="text-gray-900 text-center sm:block hidden"><strong>Email: </strong>{post.email}</p>
                     <p className="text-gray-900 mt-2 text-center">{post.note}</p>
                   </div>
                 )}
               </div>
 
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-4 flex-wrap justify-end mt-2 sm:mt-0">
                 {editingPostId === post._id ? (
                   <>
                     <button onClick={handleSave} className="text-green-600">
