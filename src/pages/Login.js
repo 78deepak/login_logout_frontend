@@ -189,7 +189,7 @@ function Login() {
   };
 
   return (
-    <div className='container bg-cyan-500 min-w-full h-screen flex items-center justify-center'>
+    <div className='container bg-cyan-200 min-w-full h-screen flex items-center justify-center'>
       <form onSubmit={handlelogin} className="bg-white p-8 rounded-lg shadow-md w-full max-w-sm">
         <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Login</h2>
         
