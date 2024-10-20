@@ -287,15 +287,20 @@ function AddPost() {
         e.preventDefault();
         const { name, note, image } = formValues;
 
-        if (!name || !note || !image) {
+        if (!name || !note ) {
             return handleerror('All fields are required, including the image.');
         }
 
         setLoading(true);  // Set loading true before starting the process
 
         try {
+            let uploadedImageUrl = null;
+            // If an image is selected, upload it to Cloudinary
+            if (image) {
+                uploadedImageUrl = await uploadImageToCloudinary(image);
+            }
             // Upload the image to Cloudinary and get the image URL
-            const uploadedImageUrl = await uploadImageToCloudinary(image);
+            // const uploadedImageUrl = await uploadImageToCloudinary(image);
 
             // After successfully uploading the image, include the URL in your request body
             const response = await fetch('https://login-logout-backend-3.onrender.com/addPost', {
