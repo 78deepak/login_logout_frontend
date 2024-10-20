@@ -14,3 +14,13 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* In your CSS file */
+nav a {
+  padding: 0.5rem 1rem; /* Add padding for better clickability */
+}
+
+nav .hover\:text-gray-500:hover {
+  color: rgba(256, 256, 256, 0.8); /* Change color on hover for visibility */
+}
+
