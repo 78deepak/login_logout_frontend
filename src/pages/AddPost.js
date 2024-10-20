@@ -374,7 +374,7 @@ function AddPost() {
                         name="image"
                         accept="image/*" // Optional: Restrict to image files
                         onChange={handleImageChange}
-                        required
+                        // required
                     />
                 </div>
                 <div>
