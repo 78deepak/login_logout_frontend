@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { handleerror, handleSuccess } from '../utills';
 import  { useNavigate,Link } from 'react-router-dom';
+import { FadeLoader } from 'react-spinners';
+import bgImage from '../assest/5096154.jpg';
 
 function Signup() {
     const Navigate = useNavigate();
@@ -10,13 +12,17 @@ function Signup() {
     password: ''
   });
 
+  const [loading, setLoading] = useState(false);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setSignup(prevSignup => ({ ...prevSignup, [name]: value }));
   };
 
   const handleSignup = async (e) => {
+
     e.preventDefault();
+    setLoading(true);
     const { name, email, password } = signup;
     if (!name || !email || !password) {
       return handleerror('Name, email, and password are required');
@@ -55,14 +61,21 @@ function Signup() {
     } catch (error) {
       handleerror(error.message);
     }
+    finally {
+      setLoading(false);  // Stop loading once the process is done
+  }
   };
 
   return (
-    <div className='container bg-gray-300 min-w-full h-screen flex items-center justify-center'>
-      <form onSubmit={handleSignup} className="bg-white p-8 rounded-lg shadow-lg w-full max-w-sm">
-        <h1 className="text-2xl font-bold mb-6 text-center text-gray-800">Sign Up</h1>
+    <div className='container bg-gray-300 min-w-full h-screen flex items-center justify-center '
+     style={{ backgroundImage:  `url(${bgImage})`,
+     backgroundSize: '100%',
+    }}
+     >
+      <form onSubmit={handleSignup} className=" p-8 rounded-lg shadow-lg w-full max-w-sm backdrop-blur-sm border border-white">
+        <h1 className="text-2xl font-bold mb-6 text-center  text-white">Sign Up</h1>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="name">Name:</label>
+          <label className="block text-sm font-medium  mb-1 text-white" htmlFor="name">Name:</label>
           <input
             type="text"
             id="name"
@@ -76,7 +89,7 @@ function Signup() {
           />
         </div>
         <div>
-          <label htmlFor="email">Email:</label>
+          <label className="block text-sm font-medium  mb-1 text-white" htmlFor="email">Email:</label>
           <input
             type="email"
             id="email"
@@ -89,7 +102,7 @@ function Signup() {
           />
         </div>
         <div>
-          <label htmlFor="password">Password:</label>
+          <label className="block text-sm font-medium mb-1 text-white" htmlFor="password">Password:</label>
           <input
             type="password"
             id="password"
@@ -102,10 +115,23 @@ function Signup() {
           />
         </div>
         <div className='py-4'>
-          <button type='submit' className='bg-red-600 w-full  rounded-md py-2 px-4 text-white'>Signup</button>
+        <button
+            type='submit'
+            className={`w-full bg-red-500 text-white py-2 rounded-md transition duration-300 transform shadow-md ${loading ? 'opacity-75 cursor-not-allowed' : 'hover:bg-red-600 hover:shadow-lg'}`}
+            disabled={loading} // Disable the button while loading
+          >
+            {loading ? (
+              <div className="flex justify-center items-center">
+                <FadeLoader size={20} color="#000" className="mr-2" />
+                <span className='text-black'>Loading...</span>
+              </div>
+            ) : (
+              'Signup'
+            )}
+          </button>
         </div>
         <div>
-        <p className="text-gray-600 text-sm">if you have already an account click on <Link className='text-red-500' to='/Login'>Login</Link></p>
+        <p className="text-white text-sm">if you have already an account click on <Link className='text-red-500 underline bold' to='/Login'>Login</Link></p>
         </div>
       </form>
     </div>
