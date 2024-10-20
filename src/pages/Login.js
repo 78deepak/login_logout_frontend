@@ -130,10 +130,13 @@ import React, { useState, useContext } from 'react';
 import { handleerror, handleSuccess } from '../utills'; // Make sure the path is correct
 import { useNavigate, Link } from 'react-router-dom';
 import { AuthContext } from '../AuthContext'; // Import the context
+import { FadeLoader } from 'react-spinners';
+
 
 function Login() {
   const navigate = useNavigate();
   const { setEmail } = useContext(AuthContext); // Use the context to set email
+  const [loading, setLoading] = useState(false);
 
   const [login, setlogin] = useState({
     email: '',
@@ -148,6 +151,7 @@ function Login() {
   const handlelogin = async (e) => {
     e.preventDefault();
     const { email, password } = login;
+    setLoading(true);
 
     if (!email || !password) {
       return handleerror('Email and password are required');
@@ -186,6 +190,9 @@ function Login() {
     } catch (err) {
       handleerror(err.message || 'An error occurred during login');
     }
+    finally {
+      setLoading(false);  // Stop loading once the process is done
+  }
   };
 
   return (
@@ -222,9 +229,20 @@ function Login() {
         </div>
 
         <div className="mb-6">
-          <button type='submit' className="w-full bg-red-500 text-white py-2 rounded-md hover:bg-red-600 transition duration-300">
-            Login
-          </button>
+        <button
+  type='submit'
+  className={`w-full bg-red-500 text-white py-2 rounded-md transition duration-300 transform shadow-md ${loading ? 'opacity-75 cursor-not-allowed' : 'hover:bg-red-600 hover:shadow-lg'}`}
+  disabled={loading} // Disable the button while loading
+>
+  {loading ? (
+    <div className="flex justify-center items-center">
+      <FadeLoader size={20} color="#000" className="mr-2" />
+      <span className='text-black'>Loading...</span>
+    </div>
+  ) : (
+    'Login'
+  )}
+</button>
         </div>
 
         <div className="text-center">
