@@ -244,6 +244,8 @@ import { handleSuccess, handleerror } from '../utills'; // Corrected import path
 import { useLocation } from 'react-router-dom';
 import { AuthContext } from '../AuthContext';
 import { FadeLoader } from 'react-spinners';
+
+
 import axios from 'axios';
 
 function AddPost() {
@@ -277,6 +279,7 @@ function AddPost() {
         try {
             const response = await axios.post('https://api.cloudinary.com/v1_1/dzipucmjc/image/upload', formData);
             return response.data.secure_url; // Return the image URL
+            
         } catch (error) {
             console.error('Error uploading image:', error);
             throw new Error('Failed to upload image.');

@@ -201,7 +201,6 @@ const AllPost = () => {
     imageUrl: '',
     note: ''
   }); // State to hold form data for editing
-
   const { email, postCount, updatePostCount } = useContext(AuthContext); // Get email and postCount from context
 
   useEffect(() => {
@@ -221,15 +220,24 @@ const AllPost = () => {
   }, [email]);
 
   // Handle delete post
-  const handleDelete = async (id) => {
+  const handleDelete = async (id, imageUrl) => {
     try {
-      await axios.delete(`https://login-logout-backend-3.onrender.com/addPost/${id}`);
-      setPosts(posts.filter((post) => post._id !== id)); // Remove the post from the state
-      updatePostCount(postCount - 1); // Decrement the post count and update AuthContext and localStorage
+      // Construct the URL with both post ID and image URL
+      await axios.delete(`https://login-logout-backend-3.onrender.com/addPost?id=${id}&imageUrl=${imageUrl}`);
+  
+      // Log the post ID and image URL to ensure they're correct
+      console.log(`Deleting post with ID: ${id} and image URL: ${imageUrl}`);
+  
+      // Remove the post from the state after successful deletion
+      setPosts(posts.filter((post) => post._id !== id));
+  
+      // Update the post count and make necessary updates to AuthContext or localStorage
+      updatePostCount(postCount - 1);
     } catch (err) {
-      setError(err); // Handle error
+      setError(err); // Handle any error that occurs during the request
     }
   };
+  
 
   // Handle edit post
   const handleEdit = (post) => {
@@ -324,6 +332,7 @@ const AllPost = () => {
                     <h2 className="text-xl font-semibold text-gray-900 text-center">{post.name}</h2>
                     <p className="text-gray-900 text-center sm:block hidden"><strong>Email: </strong>{post.email}</p>
                     <p className="text-gray-900 mt-2 text-center">{post.note}</p>
+                    <p className=''>{post.imagePublicId}</p>
                   </div>
                 )}
               </div>
