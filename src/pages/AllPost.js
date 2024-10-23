@@ -224,7 +224,7 @@ const AllPost = () => {
     try {
       // Construct the URL with both post ID and image URL
       await axios.delete(`https://login-logout-backend-3.onrender.com/addPost?id=${id}&imageUrl=${imageUrl}`);
-  
+      // await axios.delete(`http://localhost:8080/addPost?id=${id}&imageUrl=${imageUrl}`);
       // Log the post ID and image URL to ensure they're correct
       console.log(`Deleting post with ID: ${id} and image URL: ${imageUrl}`);
   
@@ -352,7 +352,7 @@ const AllPost = () => {
                     <button onClick={() => handleEdit(post)} className="text-blue-600">
                       <FontAwesomeIcon icon={faEdit} size="lg" />
                     </button>
-                    <button onClick={() => handleDelete(post._id)} className="text-red-600">
+                    <button onClick={() => handleDelete(post._id,post.imageUrl)} className="text-red-600">
                       <FontAwesomeIcon icon={faTrash} size="lg" />
                     </button>
                   </>
