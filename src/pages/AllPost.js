@@ -110,31 +110,32 @@ const AllPost = () => {
                     className="object-cover rounded-md shadow-black shadow-md mr-8"
                   />
                   {editingPostId === post._id ? (
-                    <div className="flex-grow flex flex-col justify-center space-y-4 p-4 bg-white rounded-md shadow-lg">
-                      <input
-                        type="text"
-                        name="name"
-                        value={editFormData.name}
-                        onChange={handleFormChange}
-                        className="text-xl font-semibold text-gray-900 bg-gray-100 border-b-2 border-gray-300 py-2 px-4 rounded-md"
-                        placeholder="Edit Name"
-                      />
-                      <input
-                        type="text"
-                        name="imageUrl"
-                        value={editFormData.imageUrl}
-                        onChange={handleFormChange}
-                        className="text-gray-900 bg-gray-100 border-b-2 border-gray-300 py-2 px-4 rounded-md"
-                        placeholder="Image URL"
-                      />
-                      <textarea
-                        name="note"
-                        value={editFormData.note}
-                        onChange={handleFormChange}
-                        className="text-gray-900 bg-gray-100 border-b-2 border-gray-300 py-2 px-4 rounded-md resize-none"
-                        placeholder="Add a note"
-                      />
-                    </div>
+                    <div className="flex-grow flex flex-col justify-center space-y-4 p-4 bg-white rounded-md shadow-lg w-full sm:w-3/4 md:w-1/2 mx-auto">
+                    <input
+                      type="text"
+                      name="name"
+                      value={editFormData.name}
+                      onChange={handleFormChange}
+                      className="text-xl font-semibold text-gray-900 bg-gray-100 border-b-2 border-gray-300 py-2 px-4 rounded-md w-full"
+                      placeholder="Edit Name"
+                    />
+                    <input
+                      type="text"
+                      name="imageUrl"
+                      value={editFormData.imageUrl}
+                      onChange={handleFormChange}
+                      className="text-gray-900 bg-gray-100 border-b-2 border-gray-300 py-2 px-4 rounded-md w-full"
+                      placeholder="Image URL"
+                    />
+                    <textarea
+                      name="note"
+                      value={editFormData.note}
+                      onChange={handleFormChange}
+                      className="text-gray-900 bg-gray-100 border-b-2 border-gray-300 py-2 px-4 rounded-md resize-none w-full"
+                      placeholder="Add a note"
+                    />
+                  </div>
+                  
                   ) : (
                     <div className="flex-grow flex flex-col justify-center">
                       <h2 className="text-xl font-semibold text-gray-900 text-center">{post.name}</h2>
