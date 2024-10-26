@@ -6,94 +6,84 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash, faSave, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FadeLoader } from 'react-spinners';
 
-
-
 const AllPost = () => {
-  const [posts, setPosts] = useState([]); // State to hold posts
-  const [loading, setLoading] = useState(true); // State to handle loading
-  const [error, setError] = useState(null); // State to handle errors
-  const [editingPostId, setEditingPostId] = useState(null); // Track the currently editing post ID
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [editingPostId, setEditingPostId] = useState(null);
   const [editFormData, setEditFormData] = useState({
     name: '',
     imageUrl: '',
     note: ''
-  }); // State to hold form data for editing
-  const { email, postCount, updatePostCount } = useContext(AuthContext); // Get email and postCount from context
+  });
+  const { email, postCount, updatePostCount } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
-        const response = await axios.get(`https://login-logout-backend-3.onrender.com/Allpost?email=${email}`); // API call
-        setPosts(response.data.posts); // Set the posts data into the state
-        updatePostCount(response.data.postCount); // Set the count of posts into AuthContext and localStorage
+        const response = await axios.get(`https://login-logout-backend-3.onrender.com/Allpost?email=${email}`);
+        setPosts(response.data.posts);
+        updatePostCount(response.data.postCount);
       } catch (err) {
-        setError(err); // Set error if there's an issue with the request
+        setError(err);
       } finally {
-        setLoading(false); // Stop loading after the request completes
+        setLoading(false);
       }
     };
 
     fetchData();
   }, [email]);
 
-  // Handle delete post
   const handleDelete = async (id, imageUrl) => {
     try {
-      // Construct the URL with both post ID and image URL
       await axios.delete(`https://login-logout-backend-3.onrender.com/addPost?id=${id}&imageUrl=${imageUrl}`);
-      // await axios.delete(`http://localhost:8080/addPost?id=${id}&imageUrl=${imageUrl}`);
-      // Log the post ID and image URL to ensure they're correct
-      console.log(`Deleting post with ID: ${id} and image URL: ${imageUrl}`);
-
-      // Remove the post from the state after successful deletion
       setPosts(posts.filter((post) => post._id !== id));
-
-      // Update the post count and make necessary updates to AuthContext or localStorage
       updatePostCount(postCount - 1);
     } catch (err) {
-      setError(err); // Handle any error that occurs during the request
+      setError(err);
     }
   };
 
-
-  // Handle edit post
   const handleEdit = (post) => {
-    setEditingPostId(post._id); // Set the post ID to be edited
+    setEditingPostId(post._id);
     setEditFormData({
       name: post.name,
       imageUrl: post.imageUrl,
       note: post.note
-    }); // Pre-fill the form with existing post data
+    });
   };
 
-  // Handle form changes
   const handleFormChange = (e) => {
     const { name, value } = e.target;
     setEditFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Handle save (submit) the edited post
   const handleSave = async () => {
     try {
-      await axios.put(`https://login-logout-backend-3.onrender.com/addPost/${editingPostId}`, editFormData); // Update the post on the backend
+      await axios.put(`https://login-logout-backend-3.onrender.com/addPost/${editingPostId}`, editFormData);
       setPosts((prevPosts) =>
         prevPosts.map((post) =>
           post._id === editingPostId ? { ...post, ...editFormData } : post
         )
-      ); // Update the posts state
-      setEditingPostId(null); // Exit editing mode
+      );
+      setEditingPostId(null);
     } catch (err) {
-      setError(err); // Handle error
+      setError(err);
     }
   };
 
-  // Cancel editing
   const handleCancel = () => {
-    setEditingPostId(null); // Exit editing mode without saving
+    setEditingPostId(null);
   };
 
   if (loading) {
-    return <div className="text-center text-blue-600 font-bold">Loading...</div>;
+    return (
+      <div className="text-center text-blue-600 font-bold my-10">
+        <FadeLoader color="#fff" size={15} className="mr-2" />
+        Loading...
+      </div>
+    );
   }
 
   if (error) {
@@ -104,70 +94,68 @@ const AllPost = () => {
     <div className="p-4 bg-gray-600 min-h-screen">
       <h1 className="text-3xl font-bold text-center text-gray-800 mb-8">All Posts</h1>
       <div className="text-center text-lg text-gray-800 mb-4">Total Posts: {postCount}</div>
-      {posts.length === 0 && !loading ? (
-      <div className="text-center text-gray-800 font-bold mt-8">No posts available</div>
-    ) : (
-      <ul className="space-y-4">
-        {posts.map((post) => (
-          <li key={post._id} className="bg-gray-200 shadow-md rounded-lg p-6">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <img
-                  src={post.imageUrl}
-                  alt=""
-                  width={90}
-                  height={90}
-                  className="object-cover rounded-md shadow-black shadow-md mr-8"
-                />
-                {editingPostId === post._id ? (
-                  <div className="flex-grow flex flex-col justify-center space-y-4 p-4 bg-white rounded-md shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105">
-                    {/* Edit form */}
-                    <input
-                      type="text"
-                      name="name"
-                      value={editFormData.name}
-                      onChange={handleFormChange}
-                      className="text-xl font-semibold text-gray-900 bg-gray-100 border-b-2 border-gray-300 focus:outline-none focus:border-blue-500 py-2 px-4 rounded-md transition-all duration-300 ease-in-out"
-                      placeholder="Edit Name"
-                    />
-                    <input
-                      type="text"
-                      name="imageUrl"
-                      value={editFormData.imageUrl}
-                      onChange={handleFormChange}
-                      className="text-gray-900 bg-gray-100 border-b-2 border-gray-300 focus:outline-none focus:border-blue-500 py-2 px-4 rounded-md transition-all duration-300 ease-in-out"
-                      placeholder="Image URL"
-                    />
-                    <textarea
-                      name="note"
-                      value={editFormData.note}
-                      onChange={handleFormChange}
-                      className="text-gray-900 bg-gray-100 border-b-2 border-gray-300 focus:outline-none focus:border-blue-500 py-2 px-4 rounded-md transition-all duration-300 ease-in-out resize-none"
-                      placeholder="Add a note"
-                    />
-                  </div>
-                ) : (
-                  <div className="flex-grow flex flex-col justify-center">
-                    <h2 className="text-xl font-semibold text-gray-900 text-center">{post.name}</h2>
-                    <p className="text-gray-900 text-center sm:block hidden"><strong>Email: </strong>{post.email}</p>
-                    <p className="text-gray-900 mt-2 text-center">{post.note}</p>
-                    <p className=''>{post.imagePublicId}</p>
-                  </div>
-                )}
-              </div>
+      {posts.length === 0 ? (
+        <div className="text-center text-gray-800 font-bold mt-8">No posts available</div>
+      ) : (
+        <ul className="space-y-4">
+          {posts.map((post) => (
+            <li key={post._id} className="bg-gray-200 shadow-md rounded-lg p-6">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <img
+                    src={post.imageUrl}
+                    alt=""
+                    width={90}
+                    height={90}
+                    className="object-cover rounded-md shadow-black shadow-md mr-8"
+                  />
+                  {editingPostId === post._id ? (
+                    <div className="flex-grow flex flex-col justify-center space-y-4 p-4 bg-white rounded-md shadow-lg">
+                      <input
+                        type="text"
+                        name="name"
+                        value={editFormData.name}
+                        onChange={handleFormChange}
+                        className="text-xl font-semibold text-gray-900 bg-gray-100 border-b-2 border-gray-300 py-2 px-4 rounded-md"
+                        placeholder="Edit Name"
+                      />
+                      <input
+                        type="text"
+                        name="imageUrl"
+                        value={editFormData.imageUrl}
+                        onChange={handleFormChange}
+                        className="text-gray-900 bg-gray-100 border-b-2 border-gray-300 py-2 px-4 rounded-md"
+                        placeholder="Image URL"
+                      />
+                      <textarea
+                        name="note"
+                        value={editFormData.note}
+                        onChange={handleFormChange}
+                        className="text-gray-900 bg-gray-100 border-b-2 border-gray-300 py-2 px-4 rounded-md resize-none"
+                        placeholder="Add a note"
+                      />
+                    </div>
+                  ) : (
+                    <div className="flex-grow flex flex-col justify-center">
+                      <h2 className="text-xl font-semibold text-gray-900 text-center">{post.name}</h2>
+                      <p className="text-gray-900 text-center sm:block hidden"><strong>Email: </strong>{post.email}</p>
+                      <p className="text-gray-900 mt-2 text-center">{post.note}</p>
+                      <p className="">{post.imagePublicId}</p>
+                    </div>
+                  )}
+                </div>
 
-              <div className="flex items-center space-x-4 flex-wrap justify-end mt-2 sm:mt-0">
-                {editingPostId === post._id ? (
-                  <>
-                    <button onClick={handleSave} className="text-green-600">
-                      <FontAwesomeIcon icon={faSave} size="lg" />
-                    </button>
-                    <button onClick={handleCancel} className="text-red-600">
-                      <FontAwesomeIcon icon={faTimes} size="lg" />
-                    </button>
-                  </>
-                ) : (
-                  <>
+                <div className="flex items-center space-x-4 flex-wrap justify-end mt-2 sm:mt-0">
+                  {editingPostId === post._id ? (
+                    <>
+                      <button onClick={handleSave} className="text-green-600">
+                        <FontAwesomeIcon icon={faSave} size="lg" />
+                      </button>
+                      <button onClick={handleCancel} className="text-red-600">
+                        <FontAwesomeIcon icon={faTimes} size="lg" />
+                      </button>
+                    </>
+                  ) : (
                     <div className="flex space-x-2 sm:space-x-4">
                       <button
                         onClick={() => handleEdit(post)}
@@ -182,18 +170,14 @@ const AllPost = () => {
                         <FontAwesomeIcon icon={faTrash} size="lg" />
                       </button>
                     </div>
-
-                  </>
-                )}
+                  )}
+                </div>
               </div>
-            </div>
-        
-          </li>
-        ))}
-      </ul>
+            </li>
+          ))}
+        </ul>
       )}
     </div>
-    
   );
 };
 
