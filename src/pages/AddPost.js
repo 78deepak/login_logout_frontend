@@ -24,7 +24,7 @@
 //     const handleSubmit = async (e) => {
 //         e.preventDefault();
 //         const { name, note } = formValues;
-    
+
 //         if (!name || !note) {
 //             return handleerror('All fields are required, including the image.');
 //         }
@@ -36,9 +36,9 @@
 //                 },
 //                 body: JSON.stringify({ ...formValues, email }),  // Combine formValues and email
 //             });
-    
+
 //             const data = await response.json();
-    
+
 //             if (response.ok) {
 //                 console.log('Success:', data.message);
 //                 handleSuccess("Data Added successfully");
@@ -51,7 +51,7 @@
 //             handleerror('An unexpected error occurred.');
 //         }
 //     };
-    
+
 
 //     return (
 //         <div className='container bg-gray-300 min-w-full h-screen flex items-center justify-center'>
@@ -148,7 +148,7 @@
 //     const handleSubmit = async (e) => {
 //         e.preventDefault();
 //         const { name, note, image } = formValues;
-    
+
 //         if (!name || !note || !image) {
 //             return handleerror('All fields are required, including the image.');
 //         }
@@ -170,9 +170,9 @@
 //                     imageUrl: uploadedImageUrl, // Send image URL to the server
 //                 }),
 //             });
-    
+
 //             const data = await response.json();
-    
+
 //             if (response.ok) {
 //                 console.log('Success:', data.message);
 //                 handleSuccess("Data added successfully.");
@@ -279,7 +279,7 @@ function AddPost() {
         try {
             const response = await axios.post('https://api.cloudinary.com/v1_1/dzipucmjc/image/upload', formData);
             return response.data.secure_url; // Return the image URL
-            
+
         } catch (error) {
             console.error('Error uploading image:', error);
             throw new Error('Failed to upload image.');
@@ -290,7 +290,7 @@ function AddPost() {
         e.preventDefault();
         const { name, note, image } = formValues;
 
-        if (!name || !note ) {
+        if (!name || !note) {
             return handleerror('All fields are required, including the image.');
         }
 
@@ -382,15 +382,24 @@ function AddPost() {
                         name="image"
                         accept="image/*" // Optional: Restrict to image files
                         onChange={handleImageChange}
-                        // required
+                    // required
                     />
                 </div>
                 <div>
                     <button
-                        className=' hover:bg-blue-600 rounded-md text-white shadow-md p-3 transition duration-200'
+                        className={`w-full bg-red-500 text-white py-2 rounded-md transition duration-300 transform shadow-md ${loading ? 'opacity-75 cursor-not-allowed' : 'hover:bg-red-600 hover:shadow-lg'}`}
                         type="submit"
+                        disabled={loading}
                     >
-                        {loading ? <FadeLoader size={20} color="#fff" /> : 'Submit'}
+                        {/* {loading ? <FadeLoader size={20} color="#fff" /> : 'Submit'} */}
+                        {loading ? (
+                            <div className="flex justify-center items-center">
+                                <FadeLoader size={15} color="#fff" className="mr-2" />
+                                <span className="text-white">Loading...</span>
+                            </div>
+                        ) : (
+                            'Login'
+                        )}
                     </button>
                 </div>
             </form>

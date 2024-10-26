@@ -227,17 +227,17 @@ const AllPost = () => {
       // await axios.delete(`http://localhost:8080/addPost?id=${id}&imageUrl=${imageUrl}`);
       // Log the post ID and image URL to ensure they're correct
       console.log(`Deleting post with ID: ${id} and image URL: ${imageUrl}`);
-  
+
       // Remove the post from the state after successful deletion
       setPosts(posts.filter((post) => post._id !== id));
-  
+
       // Update the post count and make necessary updates to AuthContext or localStorage
       updatePostCount(postCount - 1);
     } catch (err) {
       setError(err); // Handle any error that occurs during the request
     }
   };
-  
+
 
   // Handle edit post
   const handleEdit = (post) => {
@@ -349,12 +349,21 @@ const AllPost = () => {
                   </>
                 ) : (
                   <>
-                    <button onClick={() => handleEdit(post)} className="text-blue-600">
-                      <FontAwesomeIcon icon={faEdit} size="lg" />
-                    </button>
-                    <button onClick={() => handleDelete(post._id,post.imageUrl)} className="text-red-600">
-                      <FontAwesomeIcon icon={faTrash} size="lg" />
-                    </button>
+                    <div className="flex space-x-2 sm:space-x-4">
+                      <button
+                        onClick={() => handleEdit(post)}
+                        className="text-blue-600 text-sm sm:text-base p-1 sm:p-2"
+                      >
+                        <FontAwesomeIcon icon={faEdit} size="lg" />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(post._id, post.imageUrl)}
+                        className="text-red-600 text-sm sm:text-base p-1 sm:p-2"
+                      >
+                        <FontAwesomeIcon icon={faTrash} size="lg" />
+                      </button>
+                    </div>
+
                   </>
                 )}
               </div>
