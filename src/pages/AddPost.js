@@ -5,12 +5,14 @@ import { handleSuccess, handleerror } from '../utills'; // Corrected import path
 import { useLocation } from 'react-router-dom';
 import { AuthContext } from '../AuthContext';
 import { FadeLoader } from 'react-spinners';
+import { useNavigate } from 'react-router-dom';
 
 
 import axios from 'axios';
 
 function AddPost() {
     const location = useLocation();
+    const navigate = useNavigate(); 
     const { email } = useContext(AuthContext);
     const [loading, setLoading] = useState(false);
     const [formValues, setFormValues] = useState({
@@ -93,7 +95,10 @@ function AddPost() {
                 });
                 // Optionally, reset the file input value
                 document.getElementById('image').value = null;
-            } else {
+                navigate('/allpost');
+            }
+      
+            else {
                 console.log('Error:', data.error);
                 handleerror(data.error);
             }
@@ -159,7 +164,7 @@ function AddPost() {
                                 <span className="text-white">Loading...</span>
                             </div>
                         ) : (
-                            'Login'
+                            'Add Post'
                         )}
                     </button>
                 </div>

@@ -19,52 +19,52 @@ function Signup() {
     setSignup(prevSignup => ({ ...prevSignup, [name]: value }));
   };
 
-  const handleSignup = async (e) => {
 
+  const handleSignup = async (e) => {
     e.preventDefault();
     setLoading(true);
+  
     const { name, email, password } = signup;
+  
     if (!name || !email || !password) {
+      setLoading(false);
       return handleerror('Name, email, and password are required');
     }
-
+  
     try {
-      const url = 'https://login-logout-backend-3.onrender.com/auth/signup';
+      // const url = 'https://login-logout-backend-3.onrender.com/auth/signup';
+      const url = 'http://localhost:8080/auth/signup';
       const response = await fetch(url, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(signup)
+        body: JSON.stringify(signup),
       });
-
-
+  
       if (!response.ok) {
         throw new Error('Failed to signup');
       }
-
+  
       const result = await response.json();
-      console.log(result);
-      const {success, message,error} = result;
-      if(success){
-        handleSuccess(message)
-        setTimeout(()=>{
-            Navigate('/login')
-        },1000)
-      }else if (error) {
-        const details = error?.details[0].message;
-        console.log(details);
+      const { success, message, error } = result;
+  
+      if (success) {
+        handleSuccess(message);
+        setTimeout(() => {
+          Navigate('/verify-otp', { state: { email } }); // Pass email to OTP page
+        }, 1000);
+      } else if (error) {
+        const details = error?.details[0]?.message || 'Error occurred';
         handleerror(details);
       }
-
-
     } catch (error) {
       handleerror(error.message);
+    } finally {
+      setLoading(false);
     }
-    finally {
-      setLoading(false);  // Stop loading once the process is done
-  }
   };
+  
 
   return (
     <div className='container bg-gray-300 min-w-full h-screen flex items-center justify-center '
@@ -139,3 +139,15 @@ function Signup() {
 }
 
 export default Signup;
+
+
+
+
+
+
+
+
+
+
+
+

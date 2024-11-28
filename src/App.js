@@ -12,8 +12,7 @@ import RefreshHandler from './RefreshHandler';
 import AddPost from './pages/AddPost';
 import AddImg from './pages/AddImg';
 import AllPost from './pages/AllPost';
-// import { BioContext } from './pages/Login';
-// import { BioProvider } from './pages/Login';
+import VerifyOTP from './component/VerifyOTP';
 import Header from './component/Header';
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -32,6 +31,7 @@ function App() {
         <Route path="/home" element={<PrivateRoute element={<Home/>}/>}/>
         <Route path="/addpost" element={<PrivateRoute element={<AddPost/>}/>}/>
         <Route path="/signup" element={<Signup/>}/>
+        <Route path="/verify-otp" element={<VerifyOTP />} />
         <Route path="/login" element={<Login/>}/>
         <Route path="/addimg" element={<AddImg/>}/>
         <Route path="/allpost" element={<PrivateRoute element={<AllPost/>}/>}/>
