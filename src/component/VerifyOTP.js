@@ -23,7 +23,8 @@ function VerifyOTP() {
     }
 
     try {
-      const url = 'http://localhost:8080/auth/VerfiyEmail'; // Adjust endpoint name to match backend
+      // const url = 'http://localhost:8080/auth/VerfiyEmail'; // Adjust endpoint name to match backend
+      const url = 'https://login-logout-backend-3.onrender.com/auth/VerfiyEmail';
       const response = await fetch(url, {
         method: 'POST',
         headers: {
