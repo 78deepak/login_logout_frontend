@@ -4,33 +4,99 @@ import { useNavigate, Link } from 'react-router-dom';
 import { AuthContext } from '../AuthContext'; // Import the context
 import { FadeLoader } from 'react-spinners';
 import bgImage from '../assest/5096154.jpg';
+import { jwtDecode } from 'jwt-decode';
+
+
+// function Login() {
+//   const navigate = useNavigate();
+//   const { setEmail } = useContext(AuthContext); // Use the context to set email
+//   const [loading, setLoading] = useState(false);
+
+//   const [login, setlogin] = useState({
+//     email: '',
+//     password: ''
+//   });
+
+//   const handleChange = (e) => {
+//     const { name, value } = e.target;
+//     setlogin(prevLogin => ({ ...prevLogin, [name]: value }));
+//   };
+
+//   const handlelogin = async (e) => {
+//     e.preventDefault();
+//     const { email, password } = login;
+//     setLoading(true);
+
+//     if (!email || !password) {
+//       return handleerror('Email and password are required');
+//     }
+
+//     try {
+//       const url = 'https://login-logout-backend-3.onrender.com/auth/login'; // Ensure this URL is correct
+//       const response = await fetch(url, {
+//         method: 'POST',
+//         headers: {
+//           'Content-Type': 'application/json'
+//         },
+//         body: JSON.stringify(login)
+//       });
+
+//       const result = await response.json();
+//       const { success, message, jwtToken, email: userEmail, error, name } = result; // Destructure result
+
+//       if (error) {
+//         const details = error?.details ? error.details[0].message : message;
+//         handleerror(details || 'An unknown error occurred');
+//       } else if (success) {
+//         handleSuccess(message);
+//         localStorage.setItem('token', jwtToken);
+//         localStorage.setItem('loggedInUser', name);
+//         localStorage.setItem('email', userEmail);
+//         setEmail(userEmail); // Set the email in context
+
+//         setTimeout(() => {
+//           navigate('/home', { state: { email: userEmail } });
+//         }, 1000);
+//       } else {
+//         handleerror(message || 'Login failed. Please try again.');
+//       }
+
+//     } catch (err) {
+//       handleerror(err.message || 'An error occurred during login');
+//     }
+//     finally {
+//       setLoading(false);  // Stop loading once the process is done
+//     }
+//   };
+
 
 function Login() {
   const navigate = useNavigate();
   const { setEmail } = useContext(AuthContext); // Use the context to set email
   const [loading, setLoading] = useState(false);
 
-  const [login, setlogin] = useState({
+  const [login, setLogin] = useState({
     email: '',
     password: ''
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setlogin(prevLogin => ({ ...prevLogin, [name]: value }));
+    setLogin(prevLogin => ({ ...prevLogin, [name]: value }));
   };
 
-  const handlelogin = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     const { email, password } = login;
     setLoading(true);
 
     if (!email || !password) {
-      return handleerror('Email and password are required');
+      return handleError('Email and password are required');
     }
 
     try {
       const url = 'https://login-logout-backend-3.onrender.com/auth/login'; // Ensure this URL is correct
+      // const url = 'http://localhost:8080/auth/login'
       const response = await fetch(url, {
         method: 'POST',
         headers: {
@@ -40,31 +106,61 @@ function Login() {
       });
 
       const result = await response.json();
-      const { success, message, jwtToken, email: userEmail, error, name } = result; // Destructure result
+      const { success, message, jwtToken, email: userEmail, error, name } = result;
 
       if (error) {
         const details = error?.details ? error.details[0].message : message;
-        handleerror(details || 'An unknown error occurred');
+        handleError(details || 'An unknown error occurred');
       } else if (success) {
         handleSuccess(message);
+        
+        // Store token and user info
         localStorage.setItem('token', jwtToken);
+        // sessionStorage.setItem('token', jwtToken);
         localStorage.setItem('loggedInUser', name);
         localStorage.setItem('email', userEmail);
-        setEmail(userEmail); // Set the email in context
+        setEmail(userEmail);
 
+        // Decode token to get expiration time
+        const decodedToken = jwtDecode(jwtToken);
+        const currentTime = Date.now() / 1000;  // Current time in seconds
+
+        // Calculate time left until token expires
+        const timeLeft = (decodedToken.exp - currentTime) * 1000;
+
+        // Set timeout to auto-logout when token expires
+        setTimeout(() => {
+          alert('Session expired. You will be logged out.');
+          localStorage.removeItem('token');
+          // sessionStorage.removeItem('token')
+          localStorage.removeItem('loggedInUser');
+          localStorage.removeItem('email');
+          navigate('/login'); // Redirect to login page
+        }, timeLeft);
+
+        // Redirect to home page after successful login
         setTimeout(() => {
           navigate('/home', { state: { email: userEmail } });
         }, 1000);
       } else {
-        handleerror(message || 'Login failed. Please try again.');
+        handleError(message || 'Login failed. Please try again.');
       }
 
     } catch (err) {
-      handleerror(err.message || 'An error occurred during login');
+      handleError(err.message || 'An error occurred during login');
+    } finally {
+      setLoading(false);
     }
-    finally {
-      setLoading(false);  // Stop loading once the process is done
-    }
+  };
+
+  // Handle error display
+  const handleError = (message) => {
+    alert(message);  // You can replace this with a custom error UI
+  };
+
+  // Handle success display
+  const handleSuccess = (message) => {
+    alert(message);  // You can replace this with a custom success UI
   };
 
   return (
@@ -73,7 +169,7 @@ function Login() {
     backgroundSize: '100%',
    }}
     >
-      <form onSubmit={handlelogin} className="backdrop-blur-sm border border-white p-6 md:p-8 rounded-lg shadow-md w-full max-w-xs sm:max-w-sm">
+      <form onSubmit={handleLogin} className="backdrop-blur-sm border border-white p-6 md:p-8 rounded-lg shadow-md w-full max-w-xs sm:max-w-sm">
   <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-center text-white">Login</h2>
 
   <div className="mb-3 sm:mb-4">

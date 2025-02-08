@@ -14,6 +14,7 @@ import AddImg from './pages/AddImg';
 import AllPost from './pages/AllPost';
 import VerifyOTP from './component/VerifyOTP';
 import Header from './component/Header';
+import AboutUs from './component/AboutUs.js';
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const PrivateRoute = ({element})=>{
@@ -35,6 +36,7 @@ function App() {
         <Route path="/login" element={<Login/>}/>
         <Route path="/addimg" element={<AddImg/>}/>
         <Route path="/allpost" element={<PrivateRoute element={<AllPost/>}/>}/>
+        <Route path="/AboutUs" element ={<AboutUs/>}/>
 
       </Routes>
      

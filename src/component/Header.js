@@ -126,7 +126,7 @@ function Header({ isAuthenticated, setIsAuthenticated }) {
         <Link to="/home" className="hover:text-gray-500">
           Home
         </Link>
-        <Link to="/about" className="hover:text-gray-500">
+        <Link to="/AboutUs" className="hover:text-gray-500">
           About
         </Link>
         <Link to="/contact" className="hover:text-gray-500">
