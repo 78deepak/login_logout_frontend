@@ -91,7 +91,7 @@ function Login() {
     setLoading(true);
 
     if (!email || !password) {
-      return handleError('Email and password are required');
+      return handleerror('Email and password are required');
     }
 
     try {
