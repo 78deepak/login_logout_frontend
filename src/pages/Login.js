@@ -110,7 +110,7 @@ function Login() {
 
       if (error) {
         const details = error?.details ? error.details[0].message : message;
-        handleError(details || 'An unknown error occurred');
+        handleerror(details || 'An unknown error occurred');
       } else if (success) {
         handleSuccess(message);
         
@@ -143,18 +143,18 @@ function Login() {
           navigate('/home', { state: { email: userEmail } });
         }, 1000);
       } else {
-        handleError(message || 'Login failed. Please try again.');
+        handleerror(message || 'Login failed. Please try again.');
       }
 
     } catch (err) {
-      handleError(err.message || 'An error occurred during login');
+      handleerror(err.message || 'An error occurred during login');
     } finally {
       setLoading(false);
     }
   };
 
   // Handle error display
-  const handleError = (message) => {
+  const handleerror = (message) => {
     alert(message);  // You can replace this with a custom error UI
   };
 
