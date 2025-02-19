@@ -1,74 +1,12 @@
 import React, { useState, useContext } from 'react';
+// import { handleerror, handleSuccess } from '../../src/utills';
+import { handleerror, handleSuccess } from '../utills';
 import { useNavigate, Link } from 'react-router-dom';
-import { AuthContext } from '../AuthContext'; // Import the context
+import { AuthContext } from '../AuthContext'; 
 import { FadeLoader } from 'react-spinners';
 import bgImage from '../assest/5096154.jpg';
 import { jwtDecode } from 'jwt-decode';
-
-
-// function Login() {
-//   const navigate = useNavigate();
-//   const { setEmail } = useContext(AuthContext); // Use the context to set email
-//   const [loading, setLoading] = useState(false);
-
-//   const [login, setlogin] = useState({
-//     email: '',
-//     password: ''
-//   });
-
-//   const handleChange = (e) => {
-//     const { name, value } = e.target;
-//     setlogin(prevLogin => ({ ...prevLogin, [name]: value }));
-//   };
-
-//   const handlelogin = async (e) => {
-//     e.preventDefault();
-//     const { email, password } = login;
-//     setLoading(true);
-
-//     if (!email || !password) {
-//       return handleerror('Email and password are required');
-//     }
-
-//     try {
-//       const url = 'https://login-logout-backend-3.onrender.com/auth/login'; // Ensure this URL is correct
-//       const response = await fetch(url, {
-//         method: 'POST',
-//         headers: {
-//           'Content-Type': 'application/json'
-//         },
-//         body: JSON.stringify(login)
-//       });
-
-//       const result = await response.json();
-//       const { success, message, jwtToken, email: userEmail, error, name } = result; // Destructure result
-
-//       if (error) {
-//         const details = error?.details ? error.details[0].message : message;
-//         handleerror(details || 'An unknown error occurred');
-//       } else if (success) {
-//         handleSuccess(message);
-//         localStorage.setItem('token', jwtToken);
-//         localStorage.setItem('loggedInUser', name);
-//         localStorage.setItem('email', userEmail);
-//         setEmail(userEmail); // Set the email in context
-
-//         setTimeout(() => {
-//           navigate('/home', { state: { email: userEmail } });
-//         }, 1000);
-//       } else {
-//         handleerror(message || 'Login failed. Please try again.');
-//       }
-
-//     } catch (err) {
-//       handleerror(err.message || 'An error occurred during login');
-//     }
-//     finally {
-//       setLoading(false);  // Stop loading once the process is done
-//     }
-//   };
-
-
+ 
 function Login() {
   const navigate = useNavigate();
   const { setEmail } = useContext(AuthContext); // Use the context to set email
@@ -90,12 +28,11 @@ function Login() {
     setLoading(true);
 
     if (!email || !password) {
-      return handleerror('Email and password are required');
+        return handleerror('Email and password are required');
     }
 
     try {
       const url = 'https://login-logout-backend-3.onrender.com/auth/login'; // Ensure this URL is correct
-      // const url = 'http://localhost:8080/auth/login'
       const response = await fetch(url, {
         method: 'POST',
         headers: {
@@ -151,17 +88,6 @@ function Login() {
       setLoading(false);
     }
   };
-
-  // Handle error display
-  const handleerror = (message) => {
-    alert(message);  // You can replace this with a custom error UI
-  };
-
-  // Handle success display
-  const handleSuccess = (message) => {
-    alert(message);  // You can replace this with a custom success UI
-  };
-
   return (
     <div className='container bg-cyan-200 min-w-full h-screen flex items-center justify-center'
     style={{ backgroundImage:  `url(${bgImage})`,
@@ -228,3 +154,78 @@ function Login() {
 }
 
 export default Login;
+
+
+
+
+
+
+
+
+
+
+
+
+
+// function Login() {
+//   const navigate = useNavigate();
+//   const { setEmail } = useContext(AuthContext); // Use the context to set email
+//   const [loading, setLoading] = useState(false);
+
+//   const [login, setlogin] = useState({
+//     email: '',
+//     password: ''
+//   });
+
+//   const handleChange = (e) => {
+//     const { name, value } = e.target;
+//     setlogin(prevLogin => ({ ...prevLogin, [name]: value }));
+//   };
+
+//   const handlelogin = async (e) => {
+//     e.preventDefault();
+//     const { email, password } = login;
+//     setLoading(true);
+
+//     if (!email || !password) {
+//       return handleerror('Email and password are required');
+//     }
+
+//     try {
+//       const url = 'https://login-logout-backend-3.onrender.com/auth/login'; // Ensure this URL is correct
+//       const response = await fetch(url, {
+//         method: 'POST',
+//         headers: {
+//           'Content-Type': 'application/json'
+//         },
+//         body: JSON.stringify(login)
+//       });
+
+//       const result = await response.json();
+//       const { success, message, jwtToken, email: userEmail, error, name } = result; // Destructure result
+
+//       if (error) {
+//         const details = error?.details ? error.details[0].message : message;
+//         handleerror(details || 'An unknown error occurred');
+//       } else if (success) {
+//         handleSuccess(message);
+//         localStorage.setItem('token', jwtToken);
+//         localStorage.setItem('loggedInUser', name);
+//         localStorage.setItem('email', userEmail);
+//         setEmail(userEmail); // Set the email in context
+
+//         setTimeout(() => {
+//           navigate('/home', { state: { email: userEmail } });
+//         }, 1000);
+//       } else {
+//         handleerror(message || 'Login failed. Please try again.');
+//       }
+
+//     } catch (err) {
+//       handleerror(err.message || 'An error occurred during login');
+//     }
+//     finally {
+//       setLoading(false);  // Stop loading once the process is done
+//     }
+//   };
+

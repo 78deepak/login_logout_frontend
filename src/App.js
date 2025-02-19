@@ -1,7 +1,7 @@
 
 import './App.css';
 import Signup from './pages/Signup';
-import Login, { BioContext } from './pages/Login';
+import Login from './pages/Login';
 import Home from './pages/Home';
 import {Navigate} from "react-router-dom";
 import { Route, Routes } from 'react-router-dom';
@@ -14,6 +14,7 @@ import AddImg from './pages/AddImg';
 import AllPost from './pages/AllPost';
 import VerifyOTP from './component/VerifyOTP';
 import Header from './component/Header';
+import Contact from './component/Contact.js';
 import AboutUs from './component/AboutUs.js';
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -37,6 +38,8 @@ function App() {
         <Route path="/addimg" element={<AddImg/>}/>
         <Route path="/allpost" element={<PrivateRoute element={<AllPost/>}/>}/>
         <Route path="/AboutUs" element ={<AboutUs/>}/>
+        <Route path="/contact" element ={<Contact/>}/>
+
 
       </Routes>
      
