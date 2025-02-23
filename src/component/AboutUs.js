@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import img1 from '../assest/1st.jpg';
 import img2 from '../assest/2nd.jpg';
 import img3 from '../assest/3rd.jpg';
+import ContactForm from './ContactForm';
 
 function AboutUs() {
     useEffect(() => {
@@ -14,7 +15,7 @@ function AboutUs() {
 
     return (
         <div>
-            <div className="py-20 pb-6 px-6 md:px-24 bg-gray-900 text-center">
+            <div className="py-20 pb-6 px-6 md:px-24 bg-gray-95s0 text-center">
                 <h1 className="text-4xl md:text-6xl py-6 text-gray-200">
                     Driving Innovation in Online Education for a
                 </h1>
@@ -39,10 +40,13 @@ function AboutUs() {
                 </div>
             </div>
 
-            <div className="py-20 px-6 md:px-24 bg-indigo-950 text-center">
+            <div className="py-20 px-6 md:px-24 bg-gray-950 text-center">
                 <h1 className="text-white text-2xl md:text-4xl">
                     We are passionate about revolutionizing the way we learn. Our innovative platform <strong className="text-orange-700">combines technology</strong>, expertise, and community to create an <strong className="text-pink-600">unparalleled educational experience</strong>.
                 </h1>
+            </div>
+            <div className="flex min-h-screen flex-col lg:flex-row md:items-center justify-around lg:pt-0 pt-0 sm:px-2 bg-gray-950">
+            <ContactForm/>
             </div>
         </div>
     );

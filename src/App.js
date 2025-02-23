@@ -29,7 +29,7 @@ function App() {
        <Header isAuthenticated={isAuthenticated} setIsAuthenticated ={setIsAuthenticated} />
        <RefreshHandler setIsAuthenticated={setIsAuthenticated}/>
        <Routes>
-       <Route path="/" element={<Navigate to="/login"/>} />
+       <Route path="/" element={<Navigate to="/AboutUs"/>} />
         <Route path="/home" element={<PrivateRoute element={<Home/>}/>}/>
         <Route path="/addpost" element={<PrivateRoute element={<AddPost/>}/>}/>
         <Route path="/signup" element={<Signup/>}/>
